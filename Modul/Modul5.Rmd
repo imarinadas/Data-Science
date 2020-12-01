@@ -1,0 +1,97 @@
+---
+title: "Modul 5"
+author: "Nada Salsabila imari"
+date: "12/1/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Pendahuluan
+
+*Load library* **dslabs** dan *import dataset* ***"murders"***.
+
+```{r data}
+library(dslabs)
+data(murders)
+```
+
+Berdasarkan artikel pada tautan **https://www.rdocumentation.org/packages/dslabs/versions/0.7.3/topics/murders**, *dataset "murders"* berisikan data **US Gun Murders By State For 2010**, yaitu data pembunuhan menggunakan senjata api dari laporan FBI dan informasi populasi dari setiap negara bagian di Amerika Serikat pada tahun 2010.
+
+## Nomor 1
+
+Fungsi nchar dapat digunakan untuk menghitung jumlah karakter dari suatu vektor karakter. Buatlah satu baris kode yang akan menyimpan hasil komputasi pada variabel *‘new_names’* dan berisi singkatan nama negara ketika jumlah karakternya lebih dari 8 karakter.
+
+```{r nomor 1}
+new_names <- ifelse(nchar(murders$state)>8, murders$abb, murders$state)
+new_names
+```
+
+## Nomor 2
+
+Buat fungsi sum_n yang dapat digunakan untuk menghitung jumlah bilangan bulat dari 1 hingga *n*. Gunakan pula fungsi ini untuk menentukan jumlah bilangan bulat dari 1 hingga 5.000.
+
+```{r nomor 2}
+sum_n <- function(n){
+  x <- 1:n
+  sum(x)
+}
+
+sum_n(5000)
+```
+
+## Nomor 3
+
+Buat fungsi compute_s_n yang dapat digunakan untuk menghitung jumlah Sn = 1^2 + 2^2 + 3^2 +. . . *n*^2. Tampilkan hasil penjumlahan ketika *n* = 10.
+
+```{r nomor 3}
+compute_s_n <- function(n){
+  val <- 0
+  for(i in 1:n){
+    val <- val + i^2
+  }
+  val
+}
+
+compute_s_n(10)
+```
+
+## Nomor 4
+
+Buat vektor numerik kosong dengan nama : s_n dengan ukuran : 25 menggunakan s_n <- vector ("numeric", 25).
+Simpan di hasil komputasi S1, S2,. . . S25 menggunakan FOR-LOOP.
+
+```{r nomor 4}
+compute_s_n <- function(n){
+  x <- 1:n
+  sum(x^2)
+}
+
+s_n <- vector("numeric", 25)
+
+for (i in 1:25){
+  s_n[i] <- compute_s_n(i)
+}
+
+s_n
+```
+
+## Nomor 5
+
+Ulangi langkah pada soal nomor 4 dan gunakan fungsi sapply.
+
+```{r nomor 5}
+compute_s_n <- function(n){
+  x <- 1:n
+  sum(x^2)
+}
+
+s_n <- vector("numeric", 25)
+n <- 1:25
+s_n <- sapply (n, compute_s_n)
+s_n  
+```
+
+
