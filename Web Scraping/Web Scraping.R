@@ -62,7 +62,7 @@ head(gross_data)
 #Let's check the length of gross data
 length(gross_data)
 
-#Filling missing entries with NA
+#Filling missing entries with NA based on realtime web data
 for (i in c(1,19,29,37,41,50,51,58,59,62,79,80,87,94,96)){
   a<-gross_data[1:(i-1)]
   b<-gross_data[i:length(gross_data)]
