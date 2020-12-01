@@ -1,0 +1,97 @@
+---
+title: "Tugas Modul 3"
+author: "123180126_Nada Salsabila imari"
+date: "11/3/2020"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Pendahuluan
+
+*Load library* **dslabs** dan *import dataset* ***"murders"***.
+
+```{r data}
+library(dslabs)
+data(murders)
+```
+
+Berdasarkan artikel pada tautan **https://www.rdocumentation.org/packages/dslabs/versions/0.7.3/topics/murders**, *dataset "murders"* berisikan data **US Gun Murders By State For 2010**, yaitu data pembunuhan menggunakan senjata api dari laporan FBI dan informasi populasi dari setiap negara bagian di Amerika Serikat pada tahun 2010.
+
+## Nomor 1
+
+Diketahui pernyataan untuk *data frame* *"murders"*
+
+a. Terdiri dari 51 negara.
+
+b. Data berisi tingkat pembunuhan pada 50 negara bagian dan DC.
+
+c. Data berisi Nama negara bagian, singkatan dari nama negara bagian, wilayah negara bagian, dan populasi negara bagian serta jumlah total pembunuhan pada tahun 2010.
+
+d. str tidak menunjukkan informasi yang relevan.
+
+```{r nomor 1}
+str(murders)
+```
+
+Dengan menggunakan fungsi str untuk memeriksa struktur objek *"murders"*. Ditampilkan struktur *data frame* terdiri dari 51 objek dari 5 variabel. Variabel-variabelnya adalah *state* (nama negara bagian), *abb* (singkatan nama negara bagian), *region* (wilayah negara bagian), *population* (populasi negara bagian), dan *total* (jumlah total pembunuhan). Selain itu, juga ditampilkan jenis *class* dan *head data* masing-masing variabel.
+
+Dari informasi yang diketahui mengenai *dataset "murders"* dan struktur *data frame*, dapat disimpulkan di antara empat pernyataan diketahui yang paling menggambarkan karakter dari tiap variabel pada *data frame* adalah pernyataan
+**c. Data berisi Nama negara bagian, singkatan dari nama negara bagian, wilayah negara bagian, dan populasi negara bagian serta jumlah total pembunuhan pada tahun 2010.**
+
+## Nomor 2
+
+Menyebutkan nama kolom yang digunakan pada *data frame*.
+
+```{r nomor 2}
+names(murders)
+```
+
+Dengan menggunakan fungsi names(), didapatkan nama kolom yang digunakan pada *data frame* adalah ***state***, ***abb***, ***region***, ***population***, dan ***total***.
+
+## Nomor 3
+
+Operator aksesor ($) digunakan untuk mengekstrak informasi singkatan negara dan menyimpannya pada objek *"a"*.
+
+```{r nomor 3}
+a<-murders$abb
+class(a)
+```
+
+Dengan menggunakan fungsi class() didapatkan **jenis *class* dari objek tersebut adalah *character***.
+
+## Nomor 4
+
+Tanda kurung siku digunakan untuk mengekstrak singkatan nama negara dan menyimpannya pada objek *"b"*.
+
+```{r nomor 4}
+b<-murders[["abb"]]
+identical(a,b)
+```
+
+Dengan menggunakan fungsi identical() untuk membandingkan informasi dari kedua variabel tersebut, didapatkan hasil *TRUE* yang berarti dapat disimpulkan bahwa **variabel *"a"* dan *"b"* bernilai sama**.
+
+## Nomor 5
+
+Menentukan jumlah *region* yang dimiliki *dataset*.
+
+```{r nomor 5}
+length(levels(murders$region))
+```
+
+Dengan menggunakan satu baris kode yang memuat fungsi level() dan length(), didapatkan bahwa **jumlah *region* yang dimiliki *dataset* adalah 4**.
+
+## Nomor 6
+
+Menampilkan tabel baru yang berisi jumlah *state* pada tiap *region*.
+
+```{r nomor 6}
+table(murders$region)
+```
+
+Dengan menggunakan fungsi table() dalam satu baris kode, ditampilkan tabel baru yang berisi jumlah *state* pada tiap *region*, yaitu
+
+***Northeast* = 9**; ***South* = 17**; ***North Central* = 12**; dan ***West* = 13**.
