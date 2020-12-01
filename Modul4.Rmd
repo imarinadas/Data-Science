@@ -1,0 +1,172 @@
+---
+title: "Tugas Modul 4"
+author: "123180126_Nada Salsabila imari"
+date: "11/5/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Pendahuluan
+
+*Load library* **dslabs** dan *import dataset* ***"murders"***.
+
+```{r data}
+library(dslabs)
+data(murders)
+```
+
+Berdasarkan artikel pada tautan **https://www.rdocumentation.org/packages/dslabs/versions/0.7.3/topics/murders**, *dataset "murders"* berisikan data **US Gun Murders By State For 2010**, yaitu data pembunuhan menggunakan senjata api dari laporan FBI dan informasi populasi dari setiap negara bagian di Amerika Serikat pada tahun 2010.
+
+## Nomor 1
+Menampilkan nilai populasi terkecil, dengan langkah-langkah :
+
+- Akses variabel *populasi* menggunakan operator aksesor ($) dan simpan pada objek baru *"pop"*.
+
+- Urutkan variabel *"pop"* dari yang terkecil ke terbesar menggunakan fungsi sort() dan simpan di objek yang sama
+
+- Tampilkan nilai populasi terkecil menggunakan operator([]).
+
+```{r nomor 1}
+pop <- murders$population
+pop <- sort(pop)
+pop[1]
+```
+
+Dari langkah-langkah yang sudah dilakukan dan mengambil data pertama variabel *"pop"*, didapatkan **nilai populasi terkecil adalah 563626**.
+
+## Nomor 2
+
+Menampilkan indeks dari data yang memiliki nilai populasi terkecil.
+
+- Akeses variabel populasi dari *dataset* dan simpan dalam *"pop"*.
+
+- Gunakan fungsi order() untuk menemukan vektor indeks yang mengurutkan *"pop"* berdasakan indeks dengan nilai terkecil ke terbesar dan hasilnya disimpan dalam objek *"ord"*.
+
+- Tampilkan data pertama variabel *"ord"*.
+
+```{r nomor 2}
+pop <- murders$population
+ord <- order(pop)
+ord[1]
+```
+
+Dari langkah-langkah yang sudah dilakukan, didapatkan **indeks dari data yang memiliki nilai populasi terkecil adalah indeks 51**.
+
+## Nomor 3
+
+Menuliskan satu baris kode dengan fungsi which.min() untuk menampilkan hasil yang sama dengan langkah nomor 2.
+
+```{r nomor 3}
+which.min(murders$population)
+```
+
+Dengan menggunakan fungsi which.min() untuk data populasi, ditampilkan hasil yang sama dengan langkah nomor 2, yaitu **indeks dari data yang memiliki nilai populasi terkecil adalah indeks 51**.
+
+## Nomor 4
+
+Menampilkan nama negara yang memiliki populasi terkecil
+
+- Buat variabel *"i"* untuk menyimpan indeks dari data yang memiliki nilai populasi terkecil yang didapatkan dari penggunaan fungsi which.min().
+
+- Simpan data negara bagian dalam variabel *"states"*.
+
+- Tampilkan negara bagian dalam variabel *"states"* yang memiliki indeks *"i"*
+
+```{r nomor 4}
+i <- which.min(murders$population)
+states <- murders$state
+states[i]
+```
+
+Dari langkah-langkah yang sudah dilakukan, didapatkan **nama negara yang memiliki populasi terkecil adalah Wyoming**.
+
+## Nomor 5
+
+Menyimpan hasil pemeringkatan populasi dari tiap negara bagian, dimulai dari nilai terkecil hingga terbesar.
+
+- Simpan data negara bagian dalam variabel *"states"*. 
+
+- Gunakan fungsi rank() untuk menentukan peringkat populasi dari tiap negara bagian dimulai dari nilai terkecil hingga terbesar. Simpan hasil pemeringkatan di objek baru *"ranks"*.
+
+- Buat *data frame* baru yang berisi nama negara bagian dan peringkatnya dengan nama *"my_df"*, kemudian tampilkan data teratasnya.
+
+```{r nomor 5}
+states <- murders$state
+ranks <- rank(murders$population)
+my_df <- data.frame(states = states, ranks = ranks)
+head(my_df)
+```
+Jadi, data yang didapatkan adalah **nama negara bagian dan pemeringkatan populasi dari tiap negara bagian dimulai dari nilai terkecil hingga terbesar, tanpa mengubah urutan asli data yang ada di variabel *"states"***.
+
+## Nomor 6
+
+Mengulangi langkah nomor 5 tapi urutkan my_df dengan fungsi order().
+
+- Simpan data negara bagian dalam variabel *"states"*. 
+
+- Gunakan fungsi rank() untuk menentukan peringkat populasi dari tiap negara bagian dimulai dari nilai terkecil hingga terbesar. Simpan hasil pemeringkatan di objek baru *"ranks"*
+
+- Buat objek *"ind"* untuk menyimpan indeks yang diperlukan dalam mengurutkan data populasi. Gunakan fungsi order() untuk menentukan vektor indeks yang mengurutkan populasi berdasakan indeks dengan nilai terkecil ke terbesar.
+
+- Buat *data frame* baru yang berisi nama negara bagian dan peringkatnya yang diurutkan berdasarkan indeks populasi terkecil ke terbesar dengan nama *"my_df"*, kemudian tampilkan data teratasnya.
+
+```{r nomor 6}
+states <- murders$state
+ranks <- rank(murders$population)
+ind <- order(murders$population)
+my_df <- data.frame(states = states[ind], ranks = ranks[ind])
+head(my_df)
+```
+
+Jadi, data yang didapatkan adalah **nama negara bagian dan pemeringkatan populasi dari tiap negara bagian dimulai dari nilai terkecil hingga terbesar, yang telah diurutkan dari populasi yang paling tidak padat hingga ke yang terpadat**.
+
+## Nomor 7
+
+Buat plot yang memvisualisasikan total pembunuhan terhadap populasi dan identifikasi hubungannya.
+
+- Simpan populasi dalam satuan jutaan di variabel *x*, dan total pembunuhan di variabel *y*.
+
+- Buat plot *y* terhadap *x* menggunakan fungsi plot(). Beri keterangan sumbu x dengan argumen "xlab" sebagai "Populasi" dan sumbu y dengan argumen "ylab" sebagai "Total Pembunuhan". Argumen "pch" digunakan untuk memilih variasi titik dan argumen "cex" digunakan untuk menyesuaikan besar titik.
+
+```{r nomor 7}
+x <- murders$population / 10^6
+y <- murders$total
+plot(x, y,
+     pch = 19, cex = 0.8, xlab = "Populasi", ylab = "Total Pembunuhan")
+```
+
+Melalui visualisasi diatas, dapat  diidentifikasi hubungan antara keduanya adalah **negara bagian dengan populasi lebih besar memiliki lebih banyak total pembunuhan. Selain itu, banyak negara bagian memiliki populasi dibawah 5 juta, dapat dilihat dari titik yang berkumpul di plot**.
+
+## Nomor 8
+
+Membuat histogram dari populasi negara bagian.
+
+- Simpan populasi dalam satuan jutaan di variabel *x*.
+
+- Buat histogram dari *x* menggunakan fungsi hist(). Beri keterangan sumbu x dengan argumen "xlab" sebagai "Populasi". Argumen "main" digunakan untuk mengubah nama *default* historgram.
+
+```{r nomor 8}
+x <- murders$population / 10^6
+hist(x,
+     xlab = "Populasi", main = paste("Histogram Populasi Negara Bagian"))
+```
+
+Melalui histogram diatas, dapat dievaluasi bahwa **sebagian besar populasi memiliki frekuensi antara 0 hingga 5**. Selain itu, dapat disimpulkan pula bahwa **terdapat dua kasus yang nilai populasinya sangat tinggi, yang tertinggi pertama memiliki frekuensi antara 35 - 40 dan tertinggi kedua memiliki frekuensi antara 25 - 30**. 
+
+## Nomor 9
+
+Membuat *boxplot* dari populasi negara bagian berdasarkan wilayahnya menggunakan fungsi boxplot(). Untuk membuat angka yang ditampilkan di *boxplot* berupa angka bulat, bisa dengan cara menyatakan populasi dalam satuan jutaan. Tentukan *murders* sebagai *dataset*-nya. Beri keterangan sumbu x dengan argumen "xlab" sebagai "Wilayah Negara Bagian" dan sumbu y dengan argumen "ylab" sebagai "Populasi"
+
+```{r nomor 9}
+boxplot(population/10^6 ~ region, data = murders,
+        xlab = "Wilayah Negara Bagian", ylab = "Populasi")
+```
+
+Melalui visualisasi diatas, dapat disimpulkan bahwa :
+
+- **Dilihat dari garis batas atas tertinggi, wilayah negara bagian *Northeast* memiliki tingkat populasi yang lebih tinggi daripada tiga wilayah lainnya. Urutan tingkat populasi tertinggi kedua sampai keempat adalah wilayah negara bagian *North Central*, *South*, dan *West***.
+
+- **Dilihat dari titik tertinggi, negara bagian dengan populasi terbanyak pertama ada di wilayah negara bagian *West*, serta terbanyak kedua dan ketiga ada di wilayah negara bagian *South***.
