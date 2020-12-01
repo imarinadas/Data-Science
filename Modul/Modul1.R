@@ -1,9 +1,8 @@
 library(tidyverse)
 library(dslabs)
 
-##  PRAKTIKUM DATA SCIENCE PLUG B
+##  PRAKTIKUM DATA SCIENCE
 ##  NADA SALSABILA IMARI
-##  123180126
 
 ###############################################################################
 
