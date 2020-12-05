@@ -1,0 +1,112 @@
+---
+title: "Tugas Modul 6"
+author: "123180126_Nada Salsabila imari"
+date: "12/3/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Manipulasi Data Frame
+## Nomor 1
+
+- *Load library* **dplyr** dan **dslabs**; serta *import dataset* ***"murders"***.
+
+Berdasarkan artikel pada tautan **https://www.rdocumentation.org/packages/dslabs/versions/0.7.3/topics/murders**, *dataset "murders"* berisikan data **US Gun Murders By State For 2010**, yaitu data pembunuhan menggunakan senjata api dari laporan FBI dan informasi populasi dari setiap negara bagian di Amerika Serikat pada tahun 2010.
+
+```{r data}
+library(dplyr)
+library(dslabs)
+data(murders)
+```
+
+- Menambahkan kolom baru dengan nama ‘*rate*’ menggunakan fungsi mutate pada paket dplyr.
+
+```{r nomor 1}
+murder_rate <- mutate(murders, rate = total /  population * 100000)
+```
+
+**Setelah ditambahkan kolom baru '*rate*', didapatkan *update dataset murders* menjadi *murder_rate*, dengan *head data* adalah**
+
+```{r nomor 1 tampil}
+head(murder_rate)
+```
+
+## Nomor 2
+
+Menambahkan kolom baru yang berisi hasil pemeringkatan dari nilai tingkat pembunuhan tertinggi ke terendah menggunakan fungsi mutate menggunakan fungsi mutate dan rank.
+
+```{r nomor 2}
+murder_rank <- mutate(murder_rate, ranks = rank(-rate))
+```
+
+**Setelah ditambahkan kolom baru '*ranks*', didapatkan *update dataset murder_rate* menjadi *murder_rank*, dengan *head data* adalah**
+
+```{r nomor 2 tampil}
+head(murder_rank)
+```
+
+## Nomor 3
+
+Dengan dplyr, digunakan fungsi select untuk menampilkan kolom tertentu, misalnya *script* berikut yang menampilkan kolom *state* dan *population*
+
+```{r nomor 3 contoh}
+ select(murders, state, population) %>% head()
+```
+
+**Untuk menampilkan nama negara (*state*) dan singkatan (*abb*) dalam *dataset* “US *murders*”, digunakan *script* dan tampilan *head data* dari data yang di-*select* adalah**
+
+```{r nomor 3 jawab}
+ select(murders, state, abb) %>% head()
+```
+
+## Nomor 4
+
+Dengan menggunakan fungsi filter  pada dplyr dapat digunakan untuk memilih baris tertentu dari *data frame* yang akan disimpan. Misalnya, berikut *script* untuk menampilkan baris yang berisi dengan *state* = *New York*
+
+```{r nomor 4 contoh}
+ filter(murders, state == "New York")
+```
+
+**Untuk menampilkan 5 negara bagian teratas dengan tingkat pembunuhan tertinggi, digunakan *script* dan tampilan dari data di-*filter* adalah**
+
+```{r nomor 4 jawab}
+filter(murder_rank, between(ranks, 1, 5))
+```
+
+## Nomor 5
+
+Kondisi diketahui
+
+- Seseorang ingin tinggal di *regional Northeast* atau *West* dan ingin calon tempat tinggal yang dipilih memiliki tingkat pembunuhan kurang dari 1.
+- Tampilkan hasil yang terdiri dari: *state*, *rate*, dan peringkatnya menggunakan fungsi filter.
+
+**Dari kondisi diketahui, didapatkan *script* dan tampilan dari data difilter dan dipilih adalah** 
+
+```{r nomor 5}
+filter(murder_rank, rate < 1, region == "Northeast" | region == "West") %>%
+  select(state, rate, ranks)
+```
+
+# Operator Pipe
+## Nomor 1
+
+Kondisi diketahui
+
+- *Reset dataset* “US *murders*” ke tabel aslinya dengan melakukan update dengan perintah: data(murders).
+- Gunakan operator pipe untuk membuat *data frame* baru dengan nama ‘*my_states*’ yang hanya berisi negara-negara di *regional Northeast* atau *Eastwest* yang memiliki tingkat pembunuhan kurang dari 1, dan hanya menampilkan kolom: *state*, tingkat, dan *rate*.
+- *Script* yang dibuat seharusnya terdiri dari empat komponen yang dipisahkan oleh tiga %>%. Seperti contoh kerangka di modul.
+
+**Dari kondisi diketahui, didapatkan *script* dan data dari *data frame* '*my_states*' adalah** 
+
+```{r nomor 1 pipe}
+data(murders)
+my_states <- murders %>%
+  mutate(rate = total /  population * 100000, ranks = rank(-rate)) %>%
+  filter(rate < 1 & region == "Northeast" | region == "Eastwest") %>%
+  select(state, ranks, rate)
+
+my_states
+```
