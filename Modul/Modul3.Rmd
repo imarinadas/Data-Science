@@ -1,7 +1,6 @@
 ---
 title: "Tugas Modul 3"
 author: "Nada Salsabila imari"
-date: "11/3/2020"
 output:
   pdf_document: default
   word_document: default
