@@ -1,0 +1,175 @@
+---
+title: "Quiz_Data_Science"
+author: "Nada Salsabila Imari"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## BAGIAN PERTAMA
+
+1. *Load library* **dslabs** dan **dplyr**, serta *import dataset* ***"us_contagious_diseases"***.
+
+```{r}
+## Load Library 
+library(dslabs)
+library(dplyr)
+
+## Import Dataset
+data(us_contagious_diseases)
+```
+
+2. Menampilkan semua nama kolom pada *data frame* yang ada menggunakan fungsi names().
+
+```{r}
+## Menampilkan semua nama kolom pada data frame us_contagious_diseases
+names(us_contagious_diseases)
+```
+
+3. Menampilkan tipe data pada kolom penyakit menggunakan fungsi class().
+
+```{r}
+## Mengekstrak informasi kolom penyakit dari data frame us_contagious_diseases
+## Menampilkan tipe data pada kolom penyakit
+class(us_contagious_diseases$disease)
+```
+
+4. Menampilkan 10 data penyakit polio teratas diurutkan berdasarkan populasi dan terjadi pada antara tahun 1965 dan 1955
+
+```{r}
+## Mem-filter data berdasarkan kondisi diketahui untuk kolom penyakit dan tahun
+filter(us_contagious_diseases, disease == "Polio", between(year, 1955, 1965)) %>%
+  
+  # Mengurutkan data berdasarkan populasi dari yang terbesar ke terkecil
+  arrange(desc(population)) %>%
+  
+  # Menampilkan 10 data teratas berdasarkan populasi
+  top_n(10, population)
+```
+
+5. Klasifikasikan data tersebut berdasarkan jumlah kasusnya dengan kondisi :
+
+- jumlah kasus kurang dari 1000 dikategorikan sebagai "Biasa"
+
+- jumlah kasus lebih dari 2000 dikategorikan sebagai "Azab
+
+- jumlah kasus antara kedua kondisi diatas dikategorikan sebagai "Cobaan" 
+
+```{r}
+## Membagi data berdasarkan rentang nilai jumlah kasus diketahui
+## Setiap data diberi label sesuai kondisi diketahui
+## Simpan data klasifikasi ke variabel category
+category <- cut(us_contagious_diseases$count, 
+                                       breaks = c(-Inf, 1000, 2000, Inf),
+                                       labels = c("Biasa","Cobaan","Azab"))
+
+## Menampilkan 200 data pertama dari objek category
+head(category, 200)
+```
+
+6. Tambahkan variabel baru berisi data 'us_contagious_diseases' dengan tambahan kolom baru dengan nama "category" yang isinya merupakan implementasi nomor 5 dan kolom "rate" yang isinya merupakan hasil bagi jumlah kasus dengan populasi dikalikan 100000.
+```{r}
+## Membuat variabel baru berisi data us_contagious_diseases
+us_contagious_diseases <- us_contagious_diseases %>%
+  ## Menambahkan kolom category berisikan objek category
+  mutate(category = category,
+         ## Menambahkan kolom rate berisikan tingkat kasus penyakit
+         rate = count / population * 100000)
+
+## Menampilkan data frame us_contagious_diseases yang sudah diperbaharui
+head(us_contagious_diseases)
+```
+
+7. Menampilkan kesimpulan pada data nomor 6 dikelompokkan berdasarkan negara bagian yang isinya nama negara bagian dan rata-rata rate per negara bagian.
+```{r}
+## Membuat variabel kesimpulan berisikan data us_contagious_diseases
+kesimpulan <- us_contagious_diseases %>%
+  ## Mengelompokkan data berdasarkan negara bagian
+  group_by(negara_bagian = state) %>%
+  ## Meringkas berdasarkan rerata rate per negara bagian
+  summarise(rerata_rate = mean(rate))
+
+## Menampilkan variabel kesimpulan
+kesimpulan
+```
+
+8. Melakukan visualisasi pada hasil nomor 7 menggunakan histogram.
+```{r}
+hist(kesimpulan$rerata_rate,
+     xlab = "Rerata Rate", main = paste("Histogram Kesimpulan Rerata Rate per Negara Bagian"))
+```
+Melalui histogram di atas, dapat dievaluasi bahwa **sebagian besar rerata rate per negara bagian memiliki frekuensi antara 40 hingga 60**. Selain itu, dapat disimpulkan pula bahwa **terdapat kurang lebih lima negara bagian dengan rerata rate sangat tinggi, yaitu antara 80 sampai 140**. 
+
+## BAGIAN KEDUA
+
+1. *Load library* **readr** untuk *import file*.
+```{r}
+## Load Library
+library(readr)
+```
+
+2. Menampilkan informasi rinci tentang struktur dataset yang digunakan.
+```{r}
+## Import file
+covid = read.csv("~/Documents/Covid19_Asean.csv",
+                 sep = ",", header = TRUE)
+
+## Menampilkan struktur data frame
+str(covid)
+```
+
+Dengan menggunakan fungsi str untuk memeriksa struktur objek *"covid"*. Ditampilkan struktur *data frame* terdiri dari 10 objek dari 5 variabel. Variabel-variabelnya adalah *Country* (nama negara) dengan tipe data *character*, *CountryCode* (kode singkatan nama negara) dengan tipe data *character*, *Confirmed* (jumlah penderita terkonfirmasi) dengan tipe data *integer*, *Recovered* (jumlah penderita sembuh) dengan tipe data *integer*, dan *Deaths* (jumlah penderita meninggal) dengan tipe data *integer*. Selain itu, juga ditampilkan *head data* masing-masing variabel.
+
+Dari informasi yang diketahui mengenai *dataset "Covid19_Asean"* dan struktur *data frame*, dapat disimpulkan bahwa ***dataset* berisi nama negara, kode singkatan nama negara, jumlah penderita terkonfirmasi, jumlah penderita sembuh, dan jumlah penderita meninggal dari kasus Covid-19 di 10 negara Asean**.
+
+3. Menampilkan nama negara dengan jumlah penderita Covid-19 yang terkonfirmasi dari paling banyak ke paling sedikit.
+```{r}
+## Menyimpan data nama negara ke variabel country
+country <- covid$Country
+
+## Melakukan pengurutan data berdasarkan jumlah penderita terkonfirmasi dari yang paling banyak ke paling sedikit
+## Menyimpan hasil pengurutan ke variabel index
+index <- order(-covid$Confirmed)
+
+## Menampilkan nama negara dengan jumlah penderita terkonfirmasi dari paling banyak ke paling sedikit
+country[index]
+```
+
+4. Membuat kolom baru bernama RateDeaths yang berisi rasio korban Covid-19 yang meninggal dengan yang terkonfirmasi.
+```{r}
+## Membuat kolom baru RateDeaths berisi rasio korban meninggal dengan yang terkonfirmasi
+covid <- mutate(covid, RateDeaths = Deaths /  Confirmed)
+
+## Menampilkan data covid dengan struktur sudah diperbaharui
+covid
+```
+
+5. Menampilkan nama negara mana yang memiliki rasio kematian Covid-19 tertinggi dan terendah.
+```{r}
+## Menyimpan data nama negara ke variabel country
+country <- covid$Country
+
+## Mendapatkan indeks dari data dengan RateDeaths tertinggi
+tinggi <- which.max(covid$RateDeaths)
+## Mendapatkan indeks dari data dengan RateDeaths terendah
+rendah <- which.min(covid$RateDeaths)
+
+## Menampilkan nama negara dengan RateDeaths tertinggi
+country[tinggi]
+## Menampilkan nama negara dengan RateDeaths terendah
+country[rendah]
+```
+
+6. Menampilkan grafik plot antara penderita yang sembuh degan penderita yang terkonfirmasi Covid-19.
+```{r}
+plot(x = covid$Recovered, y = covid$Confirmed,
+     xlab = "Sembuh", ylab = "Terkonfirmasi")
+```
+
+Melalui perbandingan data jumlah penderita terkonfirmasi terhadap jumlah penderita sembuh Covid-19, dapat diidentifikasi bahwa:
+
+- **Data perbandingan tidak selalu berbanding lurus. Walaupun sebagian besar negara memiliki data perbandingan lurus, tetapi terdapat juga negara dengan jumlah penderita terkonfirmasi tinggi dan jumlah penderita sembuh cenderung rendah.**
+
+- **Terdapat beberapa negara dengan data perbandingan bernilai 0, dapat dilihat dari titik yang berkumpul di plot**.
