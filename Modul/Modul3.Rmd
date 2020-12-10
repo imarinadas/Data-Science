@@ -1,5 +1,5 @@
 ---
-title: "Tugas Modul 3"
+title: "Modul 3"
 author: "Nada Salsabila imari"
 output:
   pdf_document: default
