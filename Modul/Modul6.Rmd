@@ -1,7 +1,6 @@
 ---
 title: "Modul 6"
 author: "Nada Salsabila imari"
-date: "12/3/2020"
 output: pdf_document
 ---
 
